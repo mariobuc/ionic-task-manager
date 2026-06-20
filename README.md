@@ -66,6 +66,9 @@ ionic-task-manager/
 |-- package.json
 |-- angular.json
 |-- README.md
+|-- deliverables/
+|   |-- android/
+|   `-- ios/
 |-- src/
 |   |-- app/
 |   |   |-- home/
@@ -320,6 +323,15 @@ La evidencia visual puede almacenarse en una carpeta como:
 - `docs/screenshots/remote-config-on.png`
 - `docs/screenshots/remote-config-off.png`
 - `docs/video/demo.mp4`
+
+### Binarios finales
+
+Los binarios finales pueden ubicarse en:
+
+- `deliverables/android/`
+- `deliverables/ios/`
+
+Cuando el archivo sea demasiado grande para versionarlo de forma practica, se recomienda publicar el binario en Releases y conservar en esta carpeta una nota con el enlace correspondiente.
 
 ## Puntos para defensa tecnica
 

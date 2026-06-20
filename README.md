@@ -1,0 +1,312 @@
+# Ionic Task Manager
+
+Aplicacion demo para la prueba tecnica de desarrollo mobile con Ionic, Angular y Cordova.
+
+## Resumen del proyecto
+
+Se implementa una lista de tareas con persistencia local y administracion de categorias.
+La app permite:
+
+- Crear tareas.
+- Marcar tareas como completadas.
+- Eliminar tareas.
+- Crear, editar y eliminar categorias.
+- Asignar una categoria a cada tarea.
+- Filtrar tareas por categoria o por `Sin categoria`.
+- Mostrar una seccion de insights controlada por Firebase Remote Config.
+
+## Enfoque tecnico
+
+La entrega se prepara con **Cordova**, tal como lo solicita la guia de la prueba.
+La aplicacion web se compila con Angular e Ionic y el resultado se reutiliza dentro del contenedor nativo que Cordova genera.
+
+La aplicacion se mantiene intencionalmente simple en la UI y clara en la arquitectura:
+
+- Una pantalla principal.
+- Un servicio central de estado.
+- Un servicio separado para Remote Config.
+- Persistencia local con `localStorage`.
+- Modelo tipado para tareas, categorias e insights.
+
+## Arquitectura usada
+
+Se usa una **arquitectura ligera por capas**:
+
+1. **Presentacion**: `HomePage` renderiza la interfaz y maneja acciones de usuario.
+2. **Estado y reglas**: `TaskStoreService` concentra el estado de tareas y categorias.
+3. **Infraestructura**: `RemoteConfigService` conecta Firebase Remote Config y expone el feature flag.
+4. **Persistencia**: `localStorage` guarda y recupera el estado completo de la app.
+
+### Flujo de datos
+
+```mermaid
+flowchart LR
+  UI[HomePage] --> Store[TaskStoreService]
+  UI --> RC[RemoteConfigService]
+  Store --> LS[(localStorage)]
+  RC --> FB[(Firebase Remote Config)]
+  Store --> VM[HomeViewModel]
+  RC --> VM
+  VM --> UI
+```
+
+### Decisiones de arquitectura
+
+- Separacion de UI y logica de negocio para mantener la vista simple.
+- Centralizacion del estado para evitar suscripciones y calculos dispersos.
+- Construccion de un `HomeViewModel` unico para consumir el template con `async`.
+- Encapsulacion del acceso a Firebase para aislar la dependencia externa.
+- Fallback local cuando Remote Config no esta disponible.
+
+## Estructura del proyecto
+
+```text
+ionic-task-manager/
+|-- config.xml
+|-- package.json
+|-- angular.json
+|-- README.md
+|-- src/
+|   |-- app/
+|   |   |-- home/
+|   |   |   |-- home.page.ts
+|   |   |   |-- home.page.html
+|   |   |   `-- home.page.scss
+|   |   |-- models/
+|   |   |   `-- task.models.ts
+|   |   `-- services/
+|   |       |-- task-store.service.ts
+|   |       `-- remote-config.service.ts
+|   |-- environments/
+|   |   |-- environment.ts
+|   |   `-- environment.prod.ts
+|   |-- index.html
+|   `-- global.scss
+`-- platforms/
+```
+
+### Archivos clave
+
+- `src/app/home/home.page.*`: pantalla principal y acciones de usuario.
+- `src/app/services/task-store.service.ts`: estado, filtros, persistencia y calculos de vista.
+- `src/app/services/remote-config.service.ts`: inicializacion de Firebase y feature flag.
+- `src/app/models/task.models.ts`: contratos tipados del dominio.
+- `src/environments/environment*.ts`: configuracion de Firebase y valores por defecto.
+- `config.xml`: configuracion base de Cordova.
+- `src/index.html`: carga de `cordova.js` para ejecucion nativa.
+
+## Tecnologias y herramientas
+
+### Frameworks y librerias
+
+- **Angular 20**: framework principal de la aplicacion.
+- **Ionic 8**: componentes y patrones de UI mobile-first.
+- **Cordova 13**: empaquetado nativo para Android e iOS.
+- **RxJS**: manejo reactivo del estado y combinacion de streams.
+- **Firebase JS SDK**: integracion con Remote Config.
+- **TypeScript**: tipado y estructura del dominio.
+
+### Herramientas de desarrollo
+
+- **Angular CLI**: desarrollo, build y lint.
+- **ESLint**: control de calidad del codigo.
+- **npm**: gestion de dependencias y scripts.
+- **Android Studio / Android SDK**: compilacion de Android.
+- **Xcode**: compilacion y archivo de iOS.
+
+## Requisitos del entorno
+
+- Node.js 20 LTS o una version compatible con Angular 20.
+- npm.
+- Android Studio y Android SDK para generar APK.
+- Java 17 para compilar Android con Cordova.
+- Xcode y macOS para generar IPA.
+- Cuenta de Firebase con Remote Config habilitado.
+
+## Setup local
+
+### 1. Instalar dependencias
+
+```bash
+npm install
+```
+
+### 2. Configurar Firebase
+
+Se deben completar `src/environments/environment.ts` y `src/environments/environment.prod.ts` con los datos reales del proyecto Firebase.
+
+Campos esperados:
+
+```ts
+firebase: {
+  apiKey: '',
+  authDomain: '',
+  projectId: '',
+  appId: '',
+  messagingSenderId: '',
+  storageBucket: '',
+  measurementId: '',
+}
+```
+
+El feature flag usado por la app es:
+
+```text
+category_insights_enabled
+```
+
+Valores:
+
+- `true`: mostrar la seccion de insights por categoria.
+- `false`: ocultar esa seccion.
+
+### 3. Ejecutar en navegador
+
+```bash
+npm start
+```
+
+Se debe abrir la URL que entrega Angular CLI.
+
+### 4. Generar build web de produccion
+
+```bash
+npm run build:prod
+```
+
+Este paso genera el contenido que Cordova consume desde `www`.
+
+### 5. Preparar Cordova
+
+```bash
+npm run cordova:prepare
+```
+
+Se sincroniza el build web con la estructura nativa.
+
+### 6. Agregar plataformas
+
+```bash
+npm run cordova:add:android
+npm run cordova:add:ios
+```
+
+## Comandos utiles
+
+```bash
+npm start
+npm run build
+npm run build:prod
+npm run lint
+npm run cordova:prepare
+npm run cordova:add:android
+npm run cordova:add:ios
+npm run cordova:build:android
+npm run cordova:build:ios
+npm run cordova:run:android
+```
+
+## Compilacion nativa con Cordova
+
+### Android
+
+```bash
+npm run build:prod
+npm run cordova:prepare
+npm run cordova:build:android
+```
+
+Salida habitual:
+
+```text
+platforms/android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+### iOS
+
+En macOS:
+
+```bash
+npm run build:prod
+npm run cordova:prepare
+npm run cordova:build:ios
+```
+
+Debe abrirse el proyecto generado en Xcode para archivar y exportar el IPA.
+
+## Firebase Remote Config
+
+La aplicacion consulta Remote Config al iniciar.
+
+Si la conexion responde y el flag `category_insights_enabled` esta activo, se muestra la seccion de insights por categoria.
+Si la consulta falla, se usa el valor por defecto definido en `environment*.ts`.
+
+### Comportamiento del feature flag
+
+- `true`: se muestra el resumen de uso por categoria y la tarjeta de `Sin categoria`.
+- `false`: la app permanece operativa sin esa seccion adicional.
+
+## Optimizacion de rendimiento
+
+- Uso de `ChangeDetectionStrategy.OnPush` en la pantalla principal.
+- Consumo del estado con `async` pipe y sin suscripciones manuales en la vista.
+- Aplicacion de `trackBy` en listas de tareas e insights.
+- Concentracion de calculos en el servicio de estado, no en el template.
+- Persistencia en `localStorage` solo cuando cambia el estado.
+- Orden y filtrado en el modelo de vista para evitar logica repetida en UI.
+
+## Validacion
+
+```bash
+npm run build
+npm run lint
+```
+
+## Entregables del desafio
+
+### Codigo fuente
+
+Repositorio actualizado con:
+
+- Implementacion de tareas y categorias.
+- Persistencia local.
+- Feature flag con Firebase Remote Config.
+- Base Cordova lista para empaquetar Android e iOS.
+- README extendido para evaluador.
+
+### Capturas y video
+
+La evidencia visual puede almacenarse en una carpeta como:
+
+- `docs/screenshots/home.png`
+- `docs/screenshots/categories.png`
+- `docs/screenshots/remote-config-on.png`
+- `docs/screenshots/remote-config-off.png`
+- `docs/video/demo.mp4`
+
+## Puntos para defensa tecnica
+
+### Principales desafios
+
+- Integracion de categorias y filtros sin complicar la vista.
+- Mantenimiento de un feature flag externo con fallback local.
+- Ajuste de la entrega a Cordova sin mezclar dos flujos de empaquetado.
+
+### Como asegurar calidad y mantenibilidad
+
+- Definicion de tipos para el dominio.
+- Separacion de UI, estado e infraestructura.
+- Mantenimiento de una sola fuente de verdad para tareas y categorias.
+- Validacion de `build` y `lint` antes de cerrar cambios.
+
+### Como se abordo rendimiento
+
+- Reduccion de trabajo en template.
+- Reutilizacion de referencias con `trackBy`.
+- Evitar recreacion innecesaria de componentes y listas.
+
+## Notas de entrega
+
+- El proyecto se entrega con Cordova, no con Capacitor.
+- El build nativo depende de la configuracion local de Android Studio, Java y Xcode.
+- Los datos de Firebase deben reemplazarse con credenciales reales antes de compilar la demo final.

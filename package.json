@@ -7,9 +7,16 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "cordova:prepare": "npx cordova prepare",
+    "cordova:add:android": "npx cordova platform add android",
+    "cordova:add:ios": "npx cordova platform add ios",
+    "cordova:build:android": "npx cordova build android",
+    "cordova:build:ios": "npx cordova build ios",
+    "cordova:run:android": "npx cordova run android"
   },
   "private": true,
   "dependencies": {
@@ -21,12 +28,8 @@
     "@angular/platform-browser": "20.3.25",
     "@angular/platform-browser-dynamic": "20.3.25",
     "@angular/router": "20.3.25",
-    "@capacitor/app": "8.1.0",
-    "@capacitor/core": "8.4.1",
-    "@capacitor/haptics": "8.0.2",
-    "@capacitor/keyboard": "8.0.5",
-    "@capacitor/status-bar": "8.0.2",
     "@ionic/angular": "^8.0.0",
+    "firebase": "^12.15.0",
     "ionicons": "^7.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
@@ -42,11 +45,12 @@
     "@angular/cli": "20.3.28",
     "@angular/compiler-cli": "20.3.25",
     "@angular/language-service": "20.3.25",
-    "@capacitor/cli": "8.4.1",
     "@ionic/angular-toolkit": "^12.0.0",
     "@types/jasmine": "~5.1.0",
     "@typescript-eslint/eslint-plugin": "^8.18.0",
     "@typescript-eslint/parser": "^8.18.0",
+    "cordova": "^13.0.0",
+    "cordova-android": "^15.0.0",
     "eslint": "^9.16.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsdoc": "^48.2.1",
@@ -60,5 +64,10 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.9.0"
   },
-  "description": "An Ionic project"
+  "description": "An Ionic project",
+  "cordova": {
+    "platforms": [
+      "android"
+    ]
+  }
 }

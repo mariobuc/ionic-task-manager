@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget id="com.accenture.ionictaskmanager" version="0.0.1"
+  xmlns="http://www.w3.org/ns/widgets"
+  xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>ionic-task-manager</name>
+  <description>Ionic task manager demo with categories and Remote Config.</description>
+  <author email="mario@example.com" href="https://github.com/">
+    Mario
+  </author>
+
+  <content src="index.html" />
+  <access origin="*" />
+  <allow-navigation href="http://localhost:*/*" />
+  <allow-navigation href="https://localhost:*/*" />
+  <preference name="DisallowOverscroll" value="true" />
+  <preference name="ScrollEnabled" value="true" />
+</widget>

@@ -1,20 +1,270 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title>Task Manager</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ng-container *ngIf="vm$ | async as vm">
+    <div class="page-shell">
+      <section class="hero">
+        <p class="eyebrow">Ionic + Angular + Cordova</p>
+        <h1>To-Do con categorias y flag remoto</h1>
+        <p class="subtitle">
+          Persistir las tareas en localStorage. Usar Firebase Remote Config para controlar la
+          seccion de insights y demostrar el feature flag.
+        </p>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+        <ion-badge [color]="vm.showCategoryInsights ? 'success' : 'medium'">
+          Remote Config
+        </ion-badge>
+
+        <ion-grid class="stats-grid">
+          <ion-row>
+            <ion-col size="4">
+              <div class="stat">
+                <strong>{{ vm.totalCount }}</strong>
+                <span>Total</span>
+              </div>
+            </ion-col>
+            <ion-col size="4">
+              <div class="stat">
+                <strong>{{ vm.activeCount }}</strong>
+                <span>Activas</span>
+              </div>
+            </ion-col>
+            <ion-col size="4">
+              <div class="stat">
+                <strong>{{ vm.completedCount }}</strong>
+                <span>Completadas</span>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <h2>Agregar tarea</h2>
+          <p>Asignar categoria al crearla o cambiarla despues.</p>
+        </div>
+
+        <ion-list lines="full" class="form-list">
+          <ion-item>
+            <ion-input
+              label="Tarea"
+              labelPlacement="stacked"
+              [(ngModel)]="taskTitle"
+              placeholder="Ej. Revisar backlog"
+            ></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-select
+              label="Categoria"
+              labelPlacement="stacked"
+              [(ngModel)]="taskCategoryId"
+              interface="popover"
+            >
+              <ion-select-option value="">Sin categoria</ion-select-option>
+              <ion-select-option
+                *ngFor="let category of vm.categories; trackBy: trackById"
+                [value]="category.id"
+              >
+                {{ category.name }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
+
+        <div class="section-actions">
+          <ion-button expand="block" (click)="addTask()" [disabled]="!taskTitle.trim()">
+            Agregar tarea
+          </ion-button>
+        </div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <h2>Filtrar tareas</h2>
+          <p>Usar trackBy para manejar mejor grandes cantidades de datos.</p>
+        </div>
+
+        <ion-list lines="full" class="form-list">
+          <ion-item>
+            <ion-select
+              label="Mostrar"
+              labelPlacement="stacked"
+              [value]="vm.selectedCategoryId"
+              (ionChange)="setFilter($event.detail.value)"
+              interface="popover"
+            >
+              <ion-select-option value="all">Todas</ion-select-option>
+              <ion-select-option value="uncategorized">Sin categoria</ion-select-option>
+              <ion-select-option
+                *ngFor="let category of vm.categories; trackBy: trackById"
+                [value]="category.id"
+              >
+                {{ category.name }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
+
+        <div class="section-heading compact">
+          <h3>{{ vm.selectedCategoryName }}</h3>
+          <p>{{ vm.filteredTasks.length }} tareas visibles</p>
+        </div>
+
+        <ion-list lines="full" class="task-list">
+          <ion-item *ngFor="let task of vm.filteredTasks; trackBy: trackById">
+            <ion-checkbox
+              slot="start"
+              justify="start"
+              labelPlacement="end"
+              [checked]="task.completed"
+              (ionChange)="toggleTask(task)"
+            ></ion-checkbox>
+
+            <ion-label class="task-label">
+              <h3 [class.completed]="task.completed">{{ task.title }}</h3>
+              <p>
+                <span class="task-category-dot" [style.background]="task.categoryColor"></span>
+                {{ task.categoryName }}
+              </p>
+            </ion-label>
+
+            <ion-select
+              slot="end"
+              class="task-category-select"
+              [value]="task.categoryId || ''"
+              (ionChange)="updateTaskCategory(task, $event.detail.value)"
+              interface="popover"
+            >
+              <ion-select-option value="">Sin categoria</ion-select-option>
+              <ion-select-option
+                *ngFor="let category of vm.categories; trackBy: trackById"
+                [value]="category.id"
+              >
+                {{ category.name }}
+              </ion-select-option>
+            </ion-select>
+
+            <ion-button slot="end" fill="clear" color="medium" (click)="removeTask(task)">
+              <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-item>
+
+          <ion-item *ngIf="!vm.filteredTasks.length" lines="none">
+            <ion-label class="empty-state">
+              <h3>No hay tareas en este filtro.</h3>
+              <p>Agregar una tarea o cambiar la categoria seleccionada.</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <h2>Categorias</h2>
+          <p>Crear, editar y eliminar categorias sin salir de la vista principal.</p>
+        </div>
+
+        <ion-list lines="full" class="form-list">
+          <ion-item>
+            <ion-input
+              label="Nueva categoria"
+              labelPlacement="stacked"
+              [(ngModel)]="newCategoryName"
+              placeholder="Ej. Trabajo"
+            ></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <label class="color-field">
+              <span>Color</span>
+              <input type="color" [(ngModel)]="newCategoryColor" />
+            </label>
+          </ion-item>
+        </ion-list>
+
+        <div class="section-actions">
+          <ion-button expand="block" (click)="addCategory()" [disabled]="!newCategoryName.trim()">
+            Crear categoria
+          </ion-button>
+        </div>
+
+        <div class="editor-panel" *ngIf="editingCategoryId">
+          <div class="section-heading compact">
+            <h3>Editar categoria</h3>
+            <p>Reflejar los cambios en las tareas que usan esta categoria.</p>
+          </div>
+
+          <ion-list lines="full" class="form-list">
+            <ion-item>
+              <ion-input
+                label="Nombre"
+                labelPlacement="stacked"
+                [(ngModel)]="editingCategoryName"
+              ></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <label class="color-field">
+                <span>Color</span>
+                <input type="color" [(ngModel)]="editingCategoryColor" />
+              </label>
+            </ion-item>
+          </ion-list>
+
+          <div class="section-actions inline">
+            <ion-button fill="outline" color="medium" (click)="cancelCategoryEdit()">
+              Cancelar
+            </ion-button>
+            <ion-button (click)="saveCategoryEdit()" [disabled]="!editingCategoryName.trim()">
+              Guardar
+            </ion-button>
+          </div>
+        </div>
+
+        <ion-list lines="full" class="category-list">
+          <ion-item *ngFor="let category of vm.categories; trackBy: trackById">
+            <span class="category-dot" [style.background]="category.color"></span>
+            <ion-label>
+              <h3>{{ category.name }}</h3>
+              <p>{{ vm.categoryUsageById[category.id] || 0 }} tareas vinculadas</p>
+            </ion-label>
+
+            <ion-button slot="end" fill="clear" color="medium" (click)="startCategoryEdit(category)">
+              <ion-icon name="create-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+
+            <ion-button slot="end" fill="clear" color="danger" (click)="deleteCategory(category.id)">
+              <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </section>
+
+      <section class="section-block" *ngIf="vm.showCategoryInsights">
+        <div class="section-heading">
+          <h2>Insights activados por Remote Config</h2>
+          <p>Ocultar esta seccion si el feature flag remoto esta desactivado.</p>
+        </div>
+
+        <ion-list lines="full" class="insights-list">
+          <ion-item *ngFor="let insight of vm.categoryInsights; trackBy: trackByInsight">
+            <span class="category-dot" [style.background]="insight.categoryColor"></span>
+            <ion-label>
+              <h3>{{ insight.categoryName }}</h3>
+              <p>{{ insight.count }} tareas</p>
+            </ion-label>
+            <ion-badge slot="end" [style.background]="insight.categoryColor">
+              {{ insight.count }}
+            </ion-badge>
+          </ion-item>
+        </ion-list>
+      </section>
+    </div>
+  </ng-container>
 </ion-content>

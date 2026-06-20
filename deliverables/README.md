@@ -5,6 +5,7 @@ Carpeta destinada a binarios y artefactos de entrega final.
 ## Estructura sugerida
 
 - `deliverables/android/`: APK final para Android.
+- `deliverables/media/`: capturas y video de la demo.
 - `deliverables/ios/`: IPA final para iOS.
 
 ## Uso

@@ -68,6 +68,7 @@ ionic-task-manager/
 |-- README.md
 |-- deliverables/
 |   |-- android/
+|   |-- media/
 |   `-- ios/
 |-- src/
 |   |-- app/
@@ -316,13 +317,13 @@ Luego se abre el proyecto generado en Xcode, se configura el equipo de firma y s
 
 ### Capturas y video
 
-La evidencia visual puede almacenarse en una carpeta como:
+La evidencia visual puede almacenarse en `deliverables/media/`:
 
-- `docs/screenshots/home.png`
-- `docs/screenshots/categories.png`
-- `docs/screenshots/remote-config-on.png`
-- `docs/screenshots/remote-config-off.png`
-- `docs/video/demo.mp4`
+- `deliverables/media/home.png`
+- `deliverables/media/categories.png`
+- `deliverables/media/remote-config-on.png`
+- `deliverables/media/remote-config-off.png`
+- `deliverables/media/demo.mp4`
 
 ### Binarios finales
 
@@ -353,6 +354,20 @@ Cuando el archivo sea demasiado grande para versionarlo de forma practica, se re
 - Reduccion de trabajo en template.
 - Reutilizacion de referencias con `trackBy`.
 - Evitar recreacion innecesaria de componentes y listas.
+
+## Respuestas al punto 3
+
+### Principales desafios
+
+El reto mas visible fue integrar categorias y filtro sin transformar la pantalla en una vista pesada. La decision fue concentrar la logica en un servicio de estado y dejar la pagina principal como una capa de presentacion relativamente delgada. Tambien aparecio el ajuste de Cordova, porque la entrega debia conservar el flujo web y, al mismo tiempo, dejar lista la base nativa para Android e iOS. El feature flag con Firebase Remote Config se resolvio con un fallback local para evitar que la app dependiera por completo de la red.
+
+### Tecnicas de optimizacion aplicadas
+
+Se aplico `OnPush` para reducir trabajo de deteccion de cambios, `async` pipe para evitar suscripciones manuales y `trackBy` para que las listas no se recrearan completo en cada cambio. La vista no calcula datos de negocio directamente; esos calculos se concentran en el servicio de estado. Eso deja el template mas simple y hace mas predecible el comportamiento cuando la lista crece.
+
+### Calidad y mantenibilidad
+
+Se trabajo con modelos tipados para tareas, categorias e insights, lo que reduce ambiguedades al mover datos entre componentes y servicios. El estado se centralizo en un solo lugar para no repartir reglas por la UI. Tambien se dejo validacion con `build` y `lint` antes de cerrar cambios, y la documentacion explica el flujo real del proyecto sin agregar capas que no aportan valor.
 
 ## Notas de entrega
 

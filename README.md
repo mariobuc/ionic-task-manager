@@ -334,7 +334,7 @@ Los binarios finales pueden ubicarse en:
 
 Cuando el archivo sea demasiado grande para versionarlo de forma practica, se recomienda publicar el binario en Releases y conservar en esta carpeta una nota con el enlace correspondiente.
 
-## Puntos para defensa tecnica
+## Aspectos importantes
 
 ### Principales desafios
 

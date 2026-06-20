@@ -274,6 +274,43 @@ Repositorio actualizado con:
 - Base Cordova lista para empaquetar Android e iOS.
 - README extendido para evaluador.
 
+### Nota sobre el fork
+
+No se realizo un fork formal porque no se recibio un repositorio base independiente para crear la copia inicial.
+El desarrollo se realizo directamente sobre el repositorio proporcionado para la entrega.
+
+### Generacion de APK e IPA
+
+#### APK para Android
+
+El binario de Android se genera con Cordova en un entorno con Android Studio, Android SDK y Java 17:
+
+```bash
+npm run build:prod
+npm run cordova:prepare
+npm run cordova:build:android
+```
+
+Salida habitual:
+
+```text
+platforms/android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+Cuando se requiere un APK firmado para entrega final, el proyecto Android generado por Cordova se abre en Android Studio y se configura la firma de release antes de exportar.
+
+#### IPA para iOS
+
+El binario de iOS requiere macOS con Xcode:
+
+```bash
+npm run build:prod
+npm run cordova:prepare
+npm run cordova:build:ios
+```
+
+Luego se abre el proyecto generado en Xcode, se configura el equipo de firma y se exporta el `.ipa` desde el flujo de Archive.
+
 ### Capturas y video
 
 La evidencia visual puede almacenarse en una carpeta como:

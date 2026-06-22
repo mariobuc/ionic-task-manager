@@ -1,14 +1,10 @@
-:host {
-  display: block;
-}
-
 .page-shell {
   max-width: 960px;
-  margin: 0 auto;
-  padding: 16px;
+  margin:0 auto;
+  padding:16px 16px 32px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap:16px;
 }
 
 .eyebrow {

@@ -117,16 +117,27 @@
 
         <ion-list lines="full" class="task-list">
           <ion-item *ngFor="let task of vm.filteredTasks; trackBy: trackById">
-            <ion-checkbox
+            <ion-button
               slot="start"
-              justify="start"
-              labelPlacement="end"
-              [checked]="task.completed"
-              (ionChange)="toggleTask(task)"
-            ></ion-checkbox>
+              fill="clear"
+              class="task-toggle"
+              [color]="task.completed ? 'success' : 'medium'"
+              [attr.aria-label]="task.completed ? 'Marcar como pendiente' : 'Marcar como completada'"
+              (click)="toggleTask(task)"
+            >
+              <ion-icon
+                slot="icon-only"
+                [name]="task.completed ? 'checkmark-done-circle-outline' : 'checkmark-circle-outline'"
+              ></ion-icon>
+            </ion-button>
 
             <ion-label class="task-label">
-              <h3 [class.completed]="task.completed">{{ task.title }}</h3>
+              <div class="task-label-head">
+                <h3 [class.completed]="task.completed">{{ task.title }}</h3>
+                <ion-badge [color]="task.completed ? 'success' : 'medium'">
+                  {{ task.completed ? 'Completada' : 'Pendiente' }}
+                </ion-badge>
+              </div>
               <p>
                 <span class="task-category-dot" [style.background]="task.categoryColor"></span>
                 {{ task.categoryName }}

@@ -285,9 +285,9 @@ El desarrollo se realizo directamente sobre el repositorio proporcionado para la
 
 ### Generacion de APK e IPA
 
-#### APK para Android
+La compilacion nativa se documenta con compatibilidad para **Java 17** y **Gradle 8.x**. En Android, ese stack evita el error `Unsupported class file major version 61` que aparece con versiones anteriores de Gradle.
 
-El binario de Android se genera con Cordova en un entorno con Android Studio, Android SDK y Java 17:
+#### Build de Android
 
 ```bash
 npm run build:prod
@@ -301,11 +301,11 @@ Salida habitual:
 platforms/android/app/build/outputs/apk/debug/app-debug.apk
 ```
 
-Cuando se requiere un APK firmado para entrega final, el proyecto Android generado por Cordova se abre en Android Studio y se configura la firma de release antes de exportar.
+Si el build se ejecuta desde Android Studio, conviene verificar que el proyecto use Java 17 y Gradle 8.x antes de exportar el APK final.
 
-#### IPA para iOS
+#### Build de iOS
 
-El binario de iOS requiere macOS con Xcode:
+Requiere macOS con Xcode:
 
 ```bash
 npm run build:prod
@@ -313,17 +313,13 @@ npm run cordova:prepare
 npm run cordova:build:ios
 ```
 
-Luego se abre el proyecto generado en Xcode, se configura el equipo de firma y se exporta el `.ipa` desde el flujo de Archive.
+### Capturas y video (Evidencia del Punto 3)
 
-### Capturas y video
+Se han preparado los siguientes escenarios para demostrar las funcionalidades:
 
-La evidencia visual puede almacenarse en `deliverables/media/`:
-
-- `deliverables/media/home.png`
-- `deliverables/media/categories.png`
-- `deliverables/media/remote-config-on.png`
-- `deliverables/media/remote-config-off.png`
-- `deliverables/media/demo.mp4`
+1. **Gestion de Categorias:** Creacion de categorias con colores personalizados y asignacion dinamica a tareas existentes.
+2. **Feature Flag (Remote Config):** Demostracion de la seccion "Insights" activandose/desactivandose mediante el flag `category_insights_enabled` en la consola de Firebase.
+3. **Filtros Dinamicos:** Filtrado de la lista principal por categorias o por tareas sin categorizar.
 
 ### Binarios finales
 

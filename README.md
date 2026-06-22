@@ -305,13 +305,15 @@ Si el build se ejecuta desde Android Studio, conviene verificar que el proyecto 
 
 #### Build de iOS
 
-Requiere macOS con Xcode:
+Requiere macOS con Xcode, Apple Developer Account y una configuracion de firma valida en el proyecto generado por Cordova.
 
 ```bash
 npm run build:prod
 npm run cordova:prepare
 npm run cordova:build:ios
 ```
+
+Luego se abre `platforms/ios/App.xcworkspace` en Xcode, se verifica el equipo de firma en `Signing & Capabilities` y se genera el archivo `.ipa` desde `Product > Archive`.
 
 ### Capturas y video (Evidencia del Punto 3)
 

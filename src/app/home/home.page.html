@@ -9,10 +9,9 @@
     <div class="page-shell">
       <section class="hero">
         <p class="eyebrow">Ionic + Angular + Cordova</p>
-        <h1>To-Do con categorias y flag remoto</h1>
+        <h1>To-Do con categorias y Remote Config</h1>
         <p class="subtitle">
-          Persistir las tareas en localStorage. Usar Firebase Remote Config para controlar la
-          seccion de insights y demostrar el feature flag.
+          Persistencia local, categorias y feature flag con Firebase Remote Config.
         </p>
 
         <ion-badge [color]="vm.showCategoryInsights ? 'success' : 'medium'">
@@ -87,7 +86,7 @@
       <section class="section-block">
         <div class="section-heading">
           <h2>Filtrar tareas</h2>
-          <p>Usar trackBy para manejar mejor grandes cantidades de datos.</p>
+          <p>Filtros y listas preparados para manejar mas datos.</p>
         </div>
 
         <ion-list lines="full" class="form-list">
@@ -249,7 +248,7 @@
       <section class="section-block" *ngIf="vm.showCategoryInsights">
         <div class="section-heading">
           <h2>Insights activados por Remote Config</h2>
-          <p>Ocultar esta seccion si el feature flag remoto esta desactivado.</p>
+          <p>Esta seccion depende del feature flag remoto.</p>
         </div>
 
         <ion-list lines="full" class="insights-list">

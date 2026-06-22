@@ -285,7 +285,7 @@ El desarrollo se realizo directamente sobre el repositorio proporcionado para la
 
 ### Generacion de APK e IPA
 
-La compilacion nativa se documenta con compatibilidad para **Java 17** y **Gradle 8.x**. En Android, ese stack evita el error `Unsupported class file major version 61` que aparece con versiones anteriores de Gradle.
+La compilacion nativa se documenta con compatibilidad para **Java 17** y **Gradle 8.x**.
 
 #### Build de Android
 
@@ -320,6 +320,12 @@ Se han preparado los siguientes escenarios para demostrar las funcionalidades:
 1. **Gestion de Categorias:** Creacion de categorias con colores personalizados y asignacion dinamica a tareas existentes.
 2. **Feature Flag (Remote Config):** Demostracion de la seccion "Insights" activandose/desactivandose mediante el flag `category_insights_enabled` en la consola de Firebase.
 3. **Filtros Dinamicos:** Filtrado de la lista principal por categorias o por tareas sin categorizar.
+4. **iOS Mode:** Captura de la interfaz en Chrome DevTools con emulacion de dispositivo `iPhone 14 Pro` para evidenciar el comportamiento responsive.
+
+La evidencia puede encontrarse en `deliverables/android/` y `deliverables/media/`:
+
+- `deliverables/android/demo app.mp4`
+- `deliverables/media/capturas-adicionales.png`
 
 ### Binarios finales
 
@@ -327,8 +333,6 @@ Los binarios finales pueden ubicarse en:
 
 - `deliverables/android/`
 - `deliverables/ios/`
-
-Cuando el archivo sea demasiado grande para versionarlo de forma practica, se recomienda publicar el binario en Releases y conservar en esta carpeta una nota con el enlace correspondiente.
 
 ## Aspectos importantes
 

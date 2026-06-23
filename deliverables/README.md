@@ -15,5 +15,4 @@ Carpeta destinada a binarios y evidencia final de la prueba.
 
 ## Criterio de uso
 
-Los artefactos se copian aqui al cierre de la prueba.
-Cuando un binario no convenga versionarlo, se deja en esta estructura una referencia de descarga publicada en Releases u otro almacenamiento definido para la entrega.
+Los artefactos listados permanecen versionados dentro de esta estructura.

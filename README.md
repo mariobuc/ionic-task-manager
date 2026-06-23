@@ -139,17 +139,17 @@ npm install
 
 Se deben completar `src/environments/environment.ts` y `src/environments/environment.prod.ts` con los datos reales del proyecto Firebase.
 
-Campos esperados:
+Configuracion aplicada:
 
 ```ts
 firebase: {
-  apiKey: '',
-  authDomain: '',
-  projectId: '',
-  appId: '',
-  messagingSenderId: '',
-  storageBucket: '',
-  measurementId: '',
+  apiKey: 'AIzaSyDy4ckOBuOYT5wXmkKZXjc5IuZaDTUB4DU',
+  authDomain: 'ionic-task-manager-8aa4f.firebaseapp.com',
+  projectId: 'ionic-task-manager-8aa4f',
+  storageBucket: 'ionic-task-manager-8aa4f.firebasestorage.app',
+  messagingSenderId: '140769959464',
+  appId: '1:140769959464:web:2e28a9ea9260fbd0db9f1d',
+  measurementId: 'G-CRJL1RH04E',
 }
 ```
 
@@ -326,9 +326,7 @@ Se han preparado los siguientes escenarios para demostrar las funcionalidades:
 
 La evidencia puede encontrarse en `deliverables/android/` y `deliverables/media/`:
 
-- `deliverables/android/demo app.mp4`
 - `deliverables/media/feature_flag_demo.mp4`
-- `deliverables/media/capturas-adicionales.png`
 
 ### Binarios finales
 

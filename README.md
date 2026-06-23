@@ -326,6 +326,9 @@ Se han preparado los siguientes escenarios para demostrar las funcionalidades:
 
 La evidencia puede encontrarse en `deliverables/android/` y `deliverables/media/`:
 
+- `deliverables/android/ionic-task-manager.apk`
+- `deliverables/android/demo app.mp4`
+- `deliverables/media/demo.mp4`
 - `deliverables/media/feature_flag_demo.mp4`
 
 ### Binarios finales

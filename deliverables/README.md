@@ -1,14 +1,19 @@
 # Deliverables
 
-Carpeta destinada a binarios y artefactos de entrega final.
+Carpeta destinada a binarios y evidencia final de la prueba.
 
-## Estructura sugerida
+## Contenido actual
 
-- `deliverables/android/`: APK final para Android.
-- `deliverables/media/`: capturas y video adicionales de la demo, incluido `feature_flag_demo.mp4`.
-- `deliverables/ios/`: IPA final para iOS.
+- `deliverables/android/`
+  - `ionic-task-manager.apk`
+  - `demo app.mp4`
+- `deliverables/media/`
+  - `demo.mp4`
+  - `feature_flag_demo.mp4`
+- `deliverables/ios/`
+  - carpeta reservada para el `.ipa` final
 
-## Uso
+## Criterio de uso
 
-Copiar aqui los artefactos generados al cierre de la prueba.
-Cuando el tamano del binario no haga conveniente su versionamiento, dejar en esta carpeta un archivo de texto con el enlace de descarga publicado en Releases u otro almacenamiento definido para la entrega.
+Los artefactos se copian aqui al cierre de la prueba.
+Cuando un binario no convenga versionarlo, se deja en esta estructura una referencia de descarga publicada en Releases u otro almacenamiento definido para la entrega.
